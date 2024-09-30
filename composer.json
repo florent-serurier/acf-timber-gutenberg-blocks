@@ -1,0 +1,22 @@
+{
+    "name": "florent-serurier/acf-timber-gutenberg-blocks",
+    "description": "TODO",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Florent Serurier",
+            "email": "florentserurier@yahoo.fr",
+            "homepage": "https://github.com/florent-serurier"
+        }
+    ],
+    "require": {
+      "php": ">=8.1",
+      "roots/wordpress": "6.6.2",
+      "timber/timber": "^1.24.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FlorentSerurier\\AcfTimberGutembergBlocks\\": "src"
+        }
+    }
+}
