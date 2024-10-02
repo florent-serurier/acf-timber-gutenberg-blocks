@@ -20,7 +20,12 @@ class BlockType
 
     public static function getName(): ?string
     {
-        return null;
+        $filter = new CamelCaseToDash();
+        
+        $reflectParent = new ReflectionClass(self::class);
+        $reflectBlock = new ReflectionClass(static::class);
+
+        return strtolower($filter->filter(str_replace($reflectParent->getShortName(), '', $reflectBlock->getShortName())));
     }
 
     public static function getBlockName(): string
