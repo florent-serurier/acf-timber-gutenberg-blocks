@@ -9,7 +9,11 @@ use WP_Block;
 
 class BlockType
 {
-    final public function __construct() {}
+    private AcfLoader $acfLoader;
+
+    final public function __construct() {
+        $this->acfLoader = new AcfLoader();
+    }
 
     public static function getName(): ?string
     {
@@ -39,6 +43,11 @@ class BlockType
         }
 
         return $blockJsonPath;
+    }
+
+    public static function getAcfJsonPath(): string
+    {
+        return static::getLocatedBlockJsonPath() . DIRECTORY_SEPARATOR . 'Acf';
     }
     
     public function renderMod(array $block, string $content, bool $is_preview, int $post_id, WP_Block $wpBlock, array $blockContext): null|bool|string

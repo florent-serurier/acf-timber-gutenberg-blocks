@@ -4,29 +4,38 @@ namespace FlorentSerurier\AcfTimberGutembergBlocks;
 
 class RegisterBlockTypes
 {
-    public BlockType|array $blockTypes;
+    private BlockType|array $blockTypes;
+
+    private AcfLoader $acfLoader;
+
 
     public function __construct(BlockType|array $blockTypes) {
         $this->blockTypes = $blockTypes;
+        $this->acfLoader = new AcfLoader();
     }
 
     public function register() {
-        add_action('acf/init', [$this, 'registerBlockTypes']);
-    }
-
-    public function registerBlockTypes()
-    {
+        
         if(!is_array($this->blockTypes)) {
             $this->blockTypes = [$this->blockTypes];
         }
 
         foreach($this->blockTypes as $blockTypeClass) {
             if(!is_subclass_of($blockTypeClass, BlockType::class)) {
-                throw new \Exception('$blockType must by of type ' . BlockType::class );
+                throw new \Exception('$blockType must by of type ' . BlockType::class);
             }
             
-            register_block_type($blockTypeClass::getLocatedBlockJsonPath());
+            add_action('acf/init', function() use ($blockTypeClass) {
+                $this->registerBlockType($blockTypeClass);
+            });
+            $this->acfLoader->registerComponent($blockTypeClass);
         }
 
+        $this->acfLoader->registerSyncJson();
+    }
+
+    public function registerBlockType($blockType)
+    {
+        register_block_type($blockType::getLocatedBlockJsonPath());
     }
 }
